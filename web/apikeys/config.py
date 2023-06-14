@@ -166,39 +166,3 @@ def GithubConfig(number, key=None, get=None):
 
         return result
            
-def theHarvesterConfig(name, key=None, get=None):
-    namefile = str(Path.home())+"/Tools/theHarvester/api-keys.yaml"
-    listOfNames = {"chaos":"projectDiscovery"}
-
-    if name.lower() in listOfNames:
-        name = listOfNames[name.lower()]
-
-    if name == "censys":
-        var = "secret"
-    else:
-        var = "key"
-
-
-    with open(namefile) as file:
-        if key != None:
-            data = yaml.load(file, Loader=yaml.FullLoader)
-
-            if key != data["apikeys"][name][var] and key != "":
-                data["apikeys"][name][var] = key
-
-            elif key == "" and data["apikeys"][name][var] != None:
-                data["apikeys"][name][var] = None
-
-
-            with open(namefile, "w") as comp:
-                yaml.dump(data, comp)
-        
-        elif get == True:
-            data = yaml.load(file, Loader=yaml.FullLoader)
-
-            result = data["apikeys"][name][var]
-
-            if result == None:
-                return ''
-            else:
-                return result
